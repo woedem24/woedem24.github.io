@@ -430,6 +430,63 @@ nav.stuck{
 .pc-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:14px;}
 .pc-stk{display:flex;flex-wrap:wrap;gap:5px;}
 
+/* ── ROADMAP ── */
+.rm-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;flex-wrap:wrap;gap:16px;}
+.rm-counter{text-align:right;}
+.rm-counter-n{
+  font-family:var(--display);font-weight:800;
+  font-size:52px;color:var(--cyan);line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.rm-counter-l{
+  font-family:var(--mono);font-size:10px;color:var(--dim);
+  letter-spacing:.15em;text-transform:uppercase;
+}
+
+/* 6-segment track */
+.rm-track{display:flex;gap:5px;margin-bottom:36px;}
+.rm-seg{
+  flex:1;height:6px;border-radius:4px;
+  background:var(--surface2);position:relative;overflow:hidden;
+}
+.rm-fill{
+  position:absolute;inset:0;border-radius:4px;
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 1s cubic-bezier(.4,0,.2,1);
+}
+.rm-seg.done .rm-fill{background:var(--green);}
+.rm-seg.live .rm-fill{background:var(--amber);animation:shimfill 2s ease-in-out infinite;}
+.rm-seg.plan .rm-fill{background:var(--dim);}
+@keyframes shimfill{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* milestone rows */
+.rm-rows{display:flex;flex-direction:column;gap:4px;}
+.rm-row{
+  display:grid;grid-template-columns:32px 10px 1fr auto;
+  align-items:center;gap:14px;
+  padding:14px 18px;border-radius:10px;border:1px solid transparent;
+  transition:background .25s,border-color .25s;
+}
+.rm-row:hover{background:rgba(255,255,255,.02);border-color:var(--border);}
+.rm-num{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.08em;}
+.rm-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.rm-row.done .rm-dot{background:var(--green);box-shadow:0 0 8px rgba(0,255,135,.5);}
+.rm-row.live .rm-dot{background:var(--amber);animation:ambglow 2s ease-in-out infinite;}
+.rm-row.plan .rm-dot{background:transparent;border:1.5px solid var(--dim);}
+@keyframes ambglow{0%,100%{box-shadow:0 0 6px rgba(251,191,36,.5)}50%{box-shadow:0 0 16px rgba(251,191,36,.9)}}
+.rm-info{}
+.rm-title{font-size:14px;font-weight:500;color:var(--muted);line-height:1.3;}
+.rm-row.done .rm-title,.rm-row.live .rm-title{color:var(--text);}
+.rm-sub{font-size:12px;color:var(--dim);margin-top:2px;}
+.rm-badge{
+  font-family:var(--mono);font-size:10px;white-space:nowrap;
+  padding:3px 10px;border-radius:20px;letter-spacing:.06em;
+  align-self:center;
+}
+.rm-row.done .rm-badge{color:var(--green);background:rgba(0,255,135,.08);border:1px solid rgba(0,255,135,.2);}
+.rm-row.live .rm-badge{color:var(--amber);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);}
+.rm-row.plan .rm-badge{color:var(--dim);background:rgba(255,255,255,.02);border:1px solid var(--border);}
+
 /* ── ABOUT ── */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
 .about-q{
@@ -602,6 +659,7 @@ footer{
   <div class="nav-id">Woedem Malorku</div>
   <ul class="nav-r">
     <li><a href="#work">Work</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a class="nav-cta" href="#contact">Hire Me →</a></li>
@@ -746,6 +804,82 @@ footer{
         <span class="stg">Cosmos DB</span>
         <span class="stg">Terraform</span>
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ROADMAP -->
+<section class="sec" id="roadmap">
+  <div class="rm-head">
+    <div>
+      <div class="sec-lbl rev">6-Month Plan</div>
+      <h2 class="sec-h" style="margin-bottom:0">
+        <div class="ln rev"><span class="lni">Building in public.</span></div>
+        <div class="ln rev d1"><span class="lni">One project at a time.</span></div>
+      </h2>
+    </div>
+    <div class="rm-counter rev">
+      <div class="rm-counter-n"><span data-count="1">0</span><span style="color:var(--dim);font-size:.5em"> / 4</span></div>
+      <div class="rm-counter-l">Projects complete</div>
+    </div>
+  </div>
+
+  <div class="rm-track rev d1" id="rm-track">
+    <div class="rm-seg done"><div class="rm-fill"></div></div>
+    <div class="rm-seg live"><div class="rm-fill"></div></div>
+    <div class="rm-seg plan"><div class="rm-fill"></div></div>
+    <div class="rm-seg plan"><div class="rm-fill"></div></div>
+    <div class="rm-seg plan"><div class="rm-fill"></div></div>
+    <div class="rm-seg plan"><div class="rm-fill"></div></div>
+  </div>
+
+  <div class="rm-rows rev d2">
+    <div class="rm-row done">
+      <span class="rm-num">01</span>
+      <span class="rm-dot"></span>
+      <div class="rm-info">
+        <div class="rm-title">Serverless LLM Pipeline</div>
+        <div class="rm-sub">Azure Functions · GPT-4o · Cosmos DB · Terraform</div>
+      </div>
+      <span class="rm-badge">✓ Complete</span>
+    </div>
+    <div class="rm-row live">
+      <span class="rm-num">02</span>
+      <span class="rm-dot"></span>
+      <div class="rm-info">
+        <div class="rm-title">AI Chatbot on Azure</div>
+        <div class="rm-sub">Azure Bot Service · Azure OpenAI · App Service · Cosmos DB</div>
+      </div>
+      <span class="rm-badge">▶ In Progress</span>
+    </div>
+    <div class="rm-row plan">
+      <span class="rm-num">03</span>
+      <span class="rm-dot"></span>
+      <div class="rm-info">
+        <div class="rm-title">Kubernetes AI Inference Service</div>
+        <div class="rm-sub">AKS · Docker · Kubernetes · Azure Container Registry</div>
+      </div>
+      <span class="rm-badge">○ Planned</span>
+    </div>
+    <div class="rm-row plan">
+      <span class="rm-num">04</span>
+      <span class="rm-dot"></span>
+      <div class="rm-info">
+        <div class="rm-title">Multi-Region Architecture</div>
+        <div class="rm-sub">Azure Traffic Manager · Front Door · Cosmos DB multi-region · Terraform</div>
+      </div>
+      <span class="rm-badge">○ Planned</span>
+    </div>
+    <div class="rm-row plan">
+      <span class="rm-num">05–06</span>
+      <span class="rm-dot"></span>
+      <div class="rm-info">
+        <div class="rm-title">Portfolio polish + Job applications</div>
+        <div class="rm-sub">Refinement · Case studies · Outreach</div>
+      </div>
+      <span class="rm-badge">○ Month 5–6</span>
     </div>
   </div>
 </section>
@@ -929,6 +1063,18 @@ const lnObs=new IntersectionObserver(entries=>{
   });
 },{threshold:.2});
 document.querySelectorAll('.sec-h,.ct-head').forEach(el=>lnObs.observe(el));
+
+// ── ROADMAP TRACK ──
+const rmObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.rm-fill').forEach((f,i)=>setTimeout(()=>f.style.transform='scaleX(1)',i*90));
+      rmObs.unobserve(e.target);
+    }
+  });
+},{threshold:.3});
+const rmTrack=document.getElementById('rm-track');
+if(rmTrack)rmObs.observe(rmTrack);
 
 // ── COUNTERS ──
 const cntObs=new IntersectionObserver(entries=>{
