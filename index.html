@@ -3,471 +3,1052 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Woedem Malorku — Cloud Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Woedem Malorku — Cloud Solutions Architect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --border: #1e1e2e;
-    --accent: #00d4aa;
-    --accent2: #0088ff;
-    --text: #e2e2f0;
-    --muted: #6b6b8a;
-    --success: #00d4aa;
-    --progress: #f59e0b;
-    --planned: #374151;
-  }
+:root {
+  --bg: #060912;
+  --surface: #0e1628;
+  --surface2: #131d30;
+  --border: rgba(255,255,255,0.07);
+  --cyan: #00d4ff;
+  --cyan-dim: rgba(0,212,255,0.08);
+  --cyan-glow: rgba(0,212,255,0.25);
+  --purple: #8b5cf6;
+  --purple-dim: rgba(139,92,246,0.08);
+  --green: #00ff87;
+  --green-dim: rgba(0,255,135,0.08);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251,191,36,0.08);
+  --text: #e2e8f4;
+  --muted: #8892a8;
+  --dim: #3d4a5c;
+  --sans: 'Space Grotesk', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --r: 12px;
+  --r-sm: 6px;
+  --ease: cubic-bezier(0.4,0,0.2,1);
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  overflow-x: hidden;
+  cursor: none;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: var(--sans); }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+/* ── CURSOR ── */
+#cur, #cur-ring {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+}
+#cur {
+  width: 7px; height: 7px;
+  background: var(--cyan);
+  transition: width .15s, height .15s;
+}
+#cur-ring {
+  width: 30px; height: 30px;
+  border: 1px solid rgba(0,212,255,0.45);
+  transition: width .2s, height .2s, border-color .2s;
+  z-index: 9998;
+}
+#cur-ring.hov { width: 46px; height: 46px; border-color: var(--cyan); }
 
-  /* Grid background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
+/* ── SCROLL BAR ── */
+#sprog {
+  position: fixed; top:0; left:0; height:2px;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  z-index: 1001; width: 0; transition: width .08s linear;
+}
 
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
-    z-index: 1;
-  }
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  padding: 22px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background .3s, padding .3s, border-bottom .3s;
+}
+nav.stuck {
+  background: rgba(6,9,18,0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 14px 48px;
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--mono); font-size: 14px; font-weight: 700;
+  color: var(--cyan); letter-spacing: .05em;
+}
+.nav-links { display:flex; align-items:center; gap:4px; list-style:none; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  padding: 6px 14px; border-radius: 20px;
+  transition: color .2s, background .2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.nav-hire {
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  color: var(--cyan); border: 1px solid rgba(0,212,255,0.3);
+  background: rgba(0,212,255,0.05); border-radius: 20px;
+  padding: 6px 16px; transition: all .2s; cursor: none;
+}
+.nav-hire:hover {
+  background: rgba(0,212,255,0.12);
+  border-color: var(--cyan);
+  box-shadow: 0 0 18px var(--cyan-glow);
+}
 
-  /* Header */
-  header {
-    padding: 80px 0 60px;
-    border-bottom: 1px solid var(--border);
-  }
+/* ── HERO ── */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center; overflow: hidden;
+}
+#hero-canvas {
+  position: absolute; inset:0; width:100%; height:100%; opacity:.55;
+}
+.hero::after {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 60% at 5% 50%, rgba(0,212,255,0.055) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 70% at 95% 15%, rgba(139,92,246,0.06) 0%, transparent 60%);
+}
+.hero-wrap {
+  position: relative; z-index:2;
+  max-width: 1240px; margin: 0 auto; padding: 0 48px;
+  width: 100%; display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px; align-items: center; padding-top: 80px;
+}
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 22px;
+}
+.eyebrow-dot {
+  width: 7px; height: 7px; background: var(--green);
+  border-radius: 50%; box-shadow: 0 0 8px var(--green);
+  animation: pdot 2s ease-in-out infinite;
+}
+@keyframes pdot {
+  0%,100% { box-shadow: 0 0 8px var(--green); }
+  50% { box-shadow: 0 0 18px var(--green), 0 0 28px rgba(0,255,135,.3); }
+}
+.eyebrow-text {
+  font-family: var(--mono); font-size: 11px; color: var(--green);
+  letter-spacing: .18em; text-transform: uppercase;
+}
+.hero-name {
+  font-size: clamp(52px,6.5vw,90px);
+  font-weight: 700; line-height: .95;
+  letter-spacing: -.04em; margin-bottom: 22px;
+}
+.hero-name-1 { display: block; color: var(--text); }
+.hero-name-2 {
+  display: block;
+  background: linear-gradient(135deg, var(--cyan) 0%, #007aff 50%, var(--purple) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-role {
+  font-size: 17px; color: var(--muted);
+  height: 30px; display: flex; align-items: center; gap: 8px;
+  margin-bottom: 20px;
+}
+#type-el { color: var(--cyan); font-weight: 500; }
+.type-cur {
+  display: inline-block; width: 2px; height: 19px;
+  background: var(--cyan); vertical-align: middle;
+  margin-left: 2px; animation: blink .7s step-end infinite;
+}
+@keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+.hero-desc {
+  font-size: 15px; color: var(--muted); line-height: 1.75;
+  max-width: 440px; margin-bottom: 28px;
+}
+.hero-certs {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;
+}
+.cert-chip {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  color: var(--cyan); background: var(--cyan-dim);
+  border: 1px solid rgba(0,212,255,0.22);
+  padding: 5px 13px; border-radius: 20px;
+  letter-spacing: .05em; transition: all .2s;
+}
+.cert-chip:hover {
+  background: rgba(0,212,255,0.14);
+  border-color: var(--cyan);
+  box-shadow: 0 0 16px var(--cyan-glow);
+  transform: translateY(-1px);
+}
+.cert-chip svg { width:11px; height:11px; }
+.hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 13px; font-weight: 600;
+  padding: 11px 20px; border-radius: var(--r-sm);
+  transition: all .25s var(--ease);
+  cursor: none; border: none; text-decoration: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--cyan), #0077ff);
+  color: #000; box-shadow: 0 0 28px rgba(0,212,255,.22);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 44px rgba(0,212,255,.38), 0 10px 28px rgba(0,0,0,.3);
+}
+.btn-ghost {
+  color: var(--muted); border: 1px solid var(--border); background: transparent;
+}
+.btn-ghost:hover {
+  color: var(--text); border-color: rgba(255,255,255,.18);
+  background: rgba(255,255,255,.04); transform: translateY(-1px);
+}
+.btn-dim {
+  color: var(--dim); border: 1px solid rgba(255,255,255,.04);
+  background: transparent; opacity: .5; cursor: not-allowed;
+}
 
-  .tag {
-    display: inline-block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    border: 1px solid var(--accent);
-    padding: 3px 10px;
-    border-radius: 2px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
+/* ── TERMINAL ── */
+.terminal {
+  background: #080d1a;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--r); overflow: hidden;
+  box-shadow: 0 44px 90px rgba(0,0,0,.55), 0 0 0 1px rgba(0,212,255,.04),
+              inset 0 1px 0 rgba(255,255,255,.04);
+  position: relative; transition: box-shadow .4s;
+}
+.terminal:hover {
+  box-shadow: 0 44px 90px rgba(0,0,0,.55), 0 0 0 1px rgba(0,212,255,.12),
+              0 0 50px rgba(0,212,255,.05), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.term-bar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 11px 15px;
+  background: rgba(255,255,255,.025);
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.tdot { width:10px; height:10px; border-radius:50%; }
+.tdot:nth-child(1){background:#ff5f57}
+.tdot:nth-child(2){background:#febc2e}
+.tdot:nth-child(3){background:#28c840}
+.term-title {
+  font-family: var(--mono); font-size:11px; color:var(--dim);
+  margin-left:auto; letter-spacing:.04em;
+}
+.term-body {
+  padding: 18px 20px; font-family: var(--mono);
+  font-size: 12px; line-height: 1.9; min-height: 310px;
+}
+.tl { display:block; opacity:0; transform:translateY(3px); transition:opacity .25s,transform .25s; }
+.tl.show { opacity:1; transform:none; }
+.tc { color:#3d5066; }
+.tp { color:var(--cyan); }
+.ts { color:var(--green); }
+.ti { color:var(--muted); }
+.tr { color:var(--purple); padding-left:14px; }
+.td { color:#2a3544; }
+.tw { color:var(--amber); }
 
-  h1 {
-    font-size: clamp(32px, 5vw, 52px);
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin-bottom: 16px;
-  }
+/* ── SHARED SECTION ── */
+.section {
+  max-width: 1240px; margin: 0 auto; padding: 100px 48px;
+}
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.055), transparent);
+  margin: 0 48px;
+}
+.sec-tag {
+  font-family: var(--mono); font-size: 11px; color: var(--cyan);
+  letter-spacing: .2em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.sec-tag::before { content:''; width:22px; height:1px; background:var(--cyan); }
+.sec-h {
+  font-size: clamp(28px,4vw,46px); font-weight:700;
+  letter-spacing: -.03em; line-height: 1.08; margin-bottom: 14px;
+}
+.sec-sub {
+  font-size: 15px; color: var(--muted); line-height: 1.75; max-width: 540px;
+}
 
-  h1 span {
-    color: var(--accent);
-  }
+/* ── JOURNEY ── */
+.journey-grid {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  gap: 28px; align-items: center; margin-top: 56px;
+}
+.jcard {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 30px; position:relative;
+  overflow:hidden; transition: all .3s var(--ease);
+}
+.jcard::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+}
+.jcard.past::before { background: var(--dim); }
+.jcard.future::before { background: linear-gradient(90deg,var(--cyan),var(--purple)); }
+.jcard:hover { transform:translateY(-4px); border-color:rgba(255,255,255,.12); }
+.jcard.future:hover {
+  border-color: rgba(0,212,255,.28);
+  box-shadow: 0 20px 60px rgba(0,0,0,.35), 0 0 28px rgba(0,212,255,.06);
+}
+.jperiod {
+  font-family:var(--mono); font-size:11px; color:var(--dim);
+  letter-spacing:.1em; margin-bottom:8px;
+}
+.jrole { font-size:19px; font-weight:700; margin-bottom:18px; letter-spacing:-.02em; }
+.jcard.future .jrole {
+  background: linear-gradient(135deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.jlist { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.jlist li {
+  font-size:13px; color:var(--muted); display:flex;
+  align-items:flex-start; gap:8px; line-height:1.5;
+}
+.jlist li::before { content:'▸'; color:var(--dim); flex-shrink:0; margin-top:1px; }
+.jcard.future .jlist li::before { color:var(--cyan); }
+.jarrow {
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+}
+.jarrow-line { width:1px; height:50px; background:linear-gradient(to bottom,transparent,var(--cyan),transparent); }
+.jarrow-icon { font-size:20px; color:var(--cyan); animation:bnc 1.6s ease-in-out infinite; }
+@keyframes bnc { 0%,100%{transform:translateX(0)} 50%{transform:translateX(5px)} }
+.cert-cards {
+  display:flex; justify-content:center; gap:16px; margin-top:44px; flex-wrap:wrap;
+}
+.cert-card {
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); padding:20px 26px; transition:all .3s var(--ease);
+  position:relative; overflow:hidden;
+}
+.cert-card::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(0,212,255,.05),transparent);
+  opacity:0; transition:opacity .3s;
+}
+.cert-card:hover::before { opacity:1; }
+.cert-card:hover {
+  border-color:rgba(0,212,255,.28); transform:translateY(-3px);
+  box-shadow:0 14px 40px rgba(0,0,0,.3),0 0 22px rgba(0,212,255,.07);
+}
+.cert-ico { font-size:26px; }
+.cert-lbl { font-family:var(--mono); font-size:13px; font-weight:700; color:var(--cyan); }
+.cert-full { font-size:11px; color:var(--muted); text-align:center; max-width:90px; line-height:1.4; }
 
-  .subtitle {
-    color: var(--muted);
-    font-size: 16px;
-    line-height: 1.6;
-    max-width: 520px;
-    margin-bottom: 32px;
-  }
+/* ── ROADMAP ── */
+.rm-head {
+  display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:44px;
+}
+.rm-count { text-align:right; }
+.rm-num { font-size:52px; font-weight:700; color:var(--cyan); line-height:1; font-variant-numeric:tabular-nums; }
+.rm-lbl { font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; }
+.rm-track { display:flex; gap:4px; margin-bottom:36px; height:7px; }
+.rm-seg { flex:1; border-radius:4px; background:var(--surface2); position:relative; overflow:hidden; }
+.rm-fill {
+  position:absolute; inset:0;
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 1s var(--ease); border-radius:4px;
+}
+.rm-seg.done .rm-fill { background:var(--green); }
+.rm-seg.live .rm-fill { background:linear-gradient(90deg,var(--amber),#ff7c00); animation:shim 2s ease-in-out infinite; }
+.rm-seg.plan .rm-fill { background:var(--dim); }
+@keyframes shim { 0%,100%{opacity:1} 50%{opacity:.65} }
+.rm-rows { display:flex; flex-direction:column; gap:6px; }
+.rm-row {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 18px; border-radius:var(--r-sm);
+  border:1px solid transparent; transition:all .25s;
+}
+.rm-row:hover { background:rgba(255,255,255,.02); border-color:var(--border); }
+.rm-n { font-family:var(--mono); font-size:11px; color:var(--dim); width:22px; flex-shrink:0; }
+.rm-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+.rm-row.done .rm-dot { background:var(--green); box-shadow:0 0 8px rgba(0,255,135,.5); }
+.rm-row.live .rm-dot { background:var(--amber); animation:pamb 2s ease-in-out infinite; }
+.rm-row.plan .rm-dot { background:var(--dim); border:1px solid rgba(255,255,255,.1); }
+@keyframes pamb { 0%,100%{box-shadow:0 0 7px rgba(251,191,36,.5)} 50%{box-shadow:0 0 16px rgba(251,191,36,.8),0 0 28px rgba(251,191,36,.25)} }
+.rm-name { font-size:14px; font-weight:500; color:var(--muted); flex:1; }
+.rm-row.done .rm-name, .rm-row.live .rm-name { color:var(--text); }
+.rm-badge {
+  font-family:var(--mono); font-size:10px; letter-spacing:.07em;
+  padding:3px 9px; border-radius:12px;
+}
+.rm-row.done .rm-badge { color:var(--green); background:var(--green-dim); border:1px solid rgba(0,255,135,.2); }
+.rm-row.live .rm-badge { color:var(--amber); background:var(--amber-dim); border:1px solid rgba(251,191,36,.2); }
+.rm-row.plan .rm-badge { color:var(--dim); background:rgba(255,255,255,.025); border:1px solid var(--border); }
 
-  .certs {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
+/* ── PROJECTS ── */
+.proj-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:44px; }
+.pcard {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); padding:28px;
+  position:relative; overflow:hidden;
+  text-decoration:none; color:inherit; display:block;
+  transition:transform .12s, box-shadow .3s, border-color .3s;
+  transform-style:preserve-3d; will-change:transform;
+}
+.pcard::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px; z-index:1;
+}
+.pcard.done::before { background:linear-gradient(90deg,var(--green),rgba(0,255,135,.25),transparent); }
+.pcard.live::before { background:linear-gradient(90deg,var(--amber),rgba(251,191,36,.25),transparent); }
+.pcard.plan::before { background:linear-gradient(90deg,var(--dim),transparent); }
+.pcard-glow {
+  position:absolute; inset:0; opacity:0; pointer-events:none;
+  border-radius:var(--r); transition:opacity .5s;
+}
+.pcard.done .pcard-glow { background:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(0,255,135,.05),transparent); }
+.pcard.live .pcard-glow { background:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(251,191,36,.05),transparent); }
+.pcard.done:hover .pcard-glow, .pcard.live:hover .pcard-glow { opacity:1; }
+.pcard.done:hover { border-color:rgba(0,255,135,.22); box-shadow:0 28px 60px rgba(0,0,0,.4); }
+.pcard.live:hover { border-color:rgba(251,191,36,.22); box-shadow:0 28px 60px rgba(0,0,0,.4); }
+.pcard.plan { opacity:.5; }
+.pcard.plan:hover { opacity:.68; }
+.pcard-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; }
+.pcard-n { font-family:var(--mono); font-size:11px; color:var(--dim); letter-spacing:.1em; }
+.pstatus {
+  font-family:var(--mono); font-size:10px; font-weight:600;
+  padding:3px 10px; border-radius:12px; letter-spacing:.07em;
+  display:flex; align-items:center; gap:5px;
+}
+.pstatus .sdot { width:5px; height:5px; border-radius:50%; background:currentColor; }
+.pstatus.done { color:var(--green); background:var(--green-dim); border:1px solid rgba(0,255,135,.2); }
+.pstatus.live { color:var(--amber); background:var(--amber-dim); border:1px solid rgba(251,191,36,.2); }
+.pstatus.live .sdot { animation:pamb 2s ease-in-out infinite; }
+.pstatus.plan { color:var(--dim); background:rgba(255,255,255,.025); border:1px solid var(--border); }
+.pcard-title { font-size:19px; font-weight:700; letter-spacing:-.02em; margin-bottom:9px; line-height:1.2; }
+.pcard-desc { font-size:13px; color:var(--muted); line-height:1.65; margin-bottom:18px; }
+.pstack { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+.ptag {
+  font-family:var(--mono); font-size:11px;
+  color:#5ea7ff; background:rgba(94,167,255,.07);
+  border:1px solid rgba(94,167,255,.14);
+  padding:3px 9px; border-radius:4px; transition:all .2s;
+}
+.pcard:hover .ptag { border-color:rgba(94,167,255,.22); background:rgba(94,167,255,.11); }
+.pcard-hl {
+  border-top:1px solid var(--border); padding-top:14px;
+  display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;
+}
+.hl-l { font-family:var(--mono); font-size:9px; color:var(--dim); text-transform:uppercase; letter-spacing:.12em; margin-bottom:2px; }
+.hl-v { font-size:12px; color:var(--text); font-weight:500; }
+.pcta {
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:var(--mono); font-size:12px; color:var(--green);
+  transition:gap .2s;
+}
+.pcard:hover .pcta { gap:11px; }
 
-  .cert {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 4px 10px;
-    border-radius: 2px;
-    letter-spacing: 0.05em;
-  }
+/* ── STACK / SKILLS ── */
+.skills-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:44px; }
+.skill-col {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); padding:24px; transition:all .3s var(--ease);
+}
+.skill-col:hover { border-color:rgba(255,255,255,.12); transform:translateY(-2px); }
+.skill-col-title {
+  font-family:var(--mono); font-size:11px; color:var(--dim);
+  text-transform:uppercase; letter-spacing:.15em;
+  margin-bottom:16px; padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+}
+.skill-items { display:flex; flex-direction:column; gap:11px; }
+.skill-item { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.skill-name { font-size:13px; color:var(--muted); font-weight:500; }
+.bar-wrap { flex:1; height:3px; background:rgba(255,255,255,.05); border-radius:2px; overflow:hidden; max-width:75px; }
+.bar { height:100%; border-radius:2px; transform:scaleX(0); transform-origin:left; transition:transform 1.2s var(--ease); }
+.col-azure .bar { background:linear-gradient(90deg,var(--cyan),#0070cc); }
+.col-iac .bar { background:linear-gradient(90deg,var(--purple),#4c1d95); }
+.col-ops .bar { background:linear-gradient(90deg,var(--green),#059669); }
 
-  /* Progress bar */
-  .progress-section {
-    padding: 48px 0;
-    border-bottom: 1px solid var(--border);
-  }
+/* ── FOOTER ── */
+footer {
+  border-top:1px solid var(--border);
+  margin:0 48px; padding:52px 0;
+}
+.foot-inner {
+  max-width:1240px; margin:0 auto;
+  display:flex; align-items:center;
+  justify-content:space-between; flex-wrap:wrap; gap:24px;
+}
+.foot-l {}
+.foot-headline { font-size:30px; font-weight:700; letter-spacing:-.02em; margin-bottom:4px; }
+.foot-sub { font-size:14px; color:var(--muted); margin-bottom:24px; }
+.foot-btns { display:flex; gap:10px; flex-wrap:wrap; }
+.foot-r { display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+.foot-copy { font-family:var(--mono); font-size:11px; color:var(--dim); }
 
-  .section-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
+/* ── REVEAL ── */
+.rev {
+  opacity:0; transform:translateY(22px);
+  transition:opacity .7s var(--ease), transform .7s var(--ease);
+}
+.rev.in { opacity:1; transform:none; }
+.d1 { transition-delay:.08s; }
+.d2 { transition-delay:.16s; }
+.d3 { transition-delay:.24s; }
+.d4 { transition-delay:.32s; }
 
-  .roadmap-bar {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 12px;
-  }
-
-  .roadmap-segment {
-    height: 6px;
-    flex: 1;
-    border-radius: 2px;
-    background: var(--planned);
-  }
-
-  .roadmap-segment.done { background: var(--accent); }
-  .roadmap-segment.active { background: var(--progress); }
-
-  .roadmap-meta {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .roadmap-meta span { color: var(--accent); }
-
-  /* Projects */
-  .projects-section {
-    padding: 48px 0;
-  }
-
-  .projects-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .project-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 28px;
-    position: relative;
-    transition: border-color 0.2s;
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  }
-
-  .project-card:hover { border-color: var(--accent); }
-  .project-card.planned { opacity: 0.4; cursor: default; }
-  .project-card.planned:hover { border-color: var(--border); }
-
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-    gap: 12px;
-  }
-
-  .project-number {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .status-badge {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 2px;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .status-badge.complete {
-    background: rgba(0,212,170,0.1);
-    color: var(--accent);
-    border: 1px solid rgba(0,212,170,0.3);
-  }
-
-  .status-badge.active {
-    background: rgba(245,158,11,0.1);
-    color: var(--progress);
-    border: 1px solid rgba(245,158,11,0.3);
-  }
-
-  .status-badge.planned {
-    background: rgba(55,65,81,0.5);
-    color: var(--muted);
-    border: 1px solid var(--border);
-  }
-
-  .project-title {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
-  }
-
-  .project-desc {
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-  }
-
-  .tech-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 20px;
-  }
-
-  .tech-tag {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--accent2);
-    background: rgba(0,136,255,0.08);
-    border: 1px solid rgba(0,136,255,0.2);
-    padding: 3px 8px;
-    border-radius: 2px;
-  }
-
-  /* Highlights for completed projects */
-  .highlights {
-    border-top: 1px solid var(--border);
-    padding-top: 16px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 16px;
-  }
-
-  .highlight-item {}
-
-  .highlight-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 4px;
-  }
-
-  .highlight-value {
-    font-size: 13px;
-    color: var(--text);
-  }
-
-  .card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    margin-top: 16px;
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s;
-  }
-
-  .card-link:hover { border-color: var(--accent); }
-
-  /* Footer */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 40px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-
-  .footer-text {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .footer-links {
-    display: flex;
-    gap: 24px;
-  }
-
-  .footer-links a {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .footer-links a:hover { color: var(--accent); }
-
-  /* Animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  header, .progress-section, .project-card {
-    animation: fadeUp 0.5s ease forwards;
-  }
-
-  .project-card:nth-child(2) { animation-delay: 0.05s; }
-  .project-card:nth-child(3) { animation-delay: 0.1s; }
-  .project-card:nth-child(4) { animation-delay: 0.15s; }
+/* ── RESPONSIVE ── */
+@media(max-width:1060px){
+  .hero-wrap { grid-template-columns:1fr; }
+  .hero-right { display:none; }
+  .proj-grid { grid-template-columns:1fr; }
+  .journey-grid { grid-template-columns:1fr; gap:18px; }
+  .jarrow { display:none; }
+  .skills-grid { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:768px){
+  nav,nav.stuck { padding:14px 20px; }
+  .nav-links { display:none; }
+  .section { padding:60px 20px; }
+  .divider { margin:0 20px; }
+  footer { margin:0 20px; }
+  .skills-grid { grid-template-columns:1fr; }
+  .rm-head { flex-direction:column; align-items:flex-start; gap:10px; }
+  .foot-inner { flex-direction:column; align-items:flex-start; }
+  .foot-r { align-items:flex-start; }
+  .pcard-hl { grid-template-columns:1fr; }
+  .cert-cards { gap:10px; }
+}
 </style>
 </head>
 <body>
-<div class="container">
 
-  <header>
-    <div class="tag">Cloud Portfolio</div>
-    <h1>Woedem <span>Malorku</span></h1>
-    <p class="subtitle">Systems Administrator transitioning to Cloud Solutions Architect. Building a portfolio of real, deployed cloud projects — not tutorials, not sandboxes.</p>
-    <div class="certs">
-      <span class="cert">AZ-104</span>
-      <span class="cert">AWS SOA-C03</span>
-      <span class="cert">AZ AI-900</span>
-    </div>
-  </header>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<div id="sprog"></div>
 
-  <section class="progress-section">
-    <div class="section-label">6-Month Roadmap</div>
-    <div class="roadmap-bar">
-      <div class="roadmap-segment done"></div>
-      <div class="roadmap-segment active"></div>
-      <div class="roadmap-segment planned"></div>
-      <div class="roadmap-segment planned"></div>
-      <div class="roadmap-segment planned"></div>
-      <div class="roadmap-segment planned"></div>
-    </div>
-    <div class="roadmap-meta"><span>1 of 4 projects complete</span> — Month 6 reserved for polish and job applications</div>
-  </section>
+<nav id="nav">
+  <div class="nav-logo">wm_</div>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a class="nav-hire" href="#contact">Open to Roles →</a></li>
+  </ul>
+</nav>
 
-  <section class="projects-section">
-    <div class="section-label">Projects</div>
-    <div class="projects-grid">
-
-      <!-- Project 1 — COMPLETE -->
-      <a class="project-card" href="https://github.com/woedem24/azure-llm-pipeline" target="_blank">
-        <div class="card-header">
-          <div class="project-number">01</div>
-          <span class="status-badge complete">✓ Complete</span>
-        </div>
-        <div class="project-title">Serverless LLM Pipeline</div>
-        <div class="project-desc">
-          Event-driven document analysis pipeline. Upload a file to Blob Storage, an Azure Function triggers automatically, GPT-4o analyses the content, results saved to Cosmos DB. Fully deployed and running in Azure.
-        </div>
-        <div class="tech-stack">
-          <span class="tech-tag">Azure Functions</span>
-          <span class="tech-tag">Azure OpenAI / GPT-4o</span>
-          <span class="tech-tag">Cosmos DB</span>
-          <span class="tech-tag">Key Vault</span>
-          <span class="tech-tag">Blob Storage</span>
-          <span class="tech-tag">Terraform</span>
-          <span class="tech-tag">Python</span>
-        </div>
-        <div class="highlights">
-          <div class="highlight-item">
-            <div class="highlight-label">Pattern</div>
-            <div class="highlight-value">Event-driven, serverless</div>
-          </div>
-          <div class="highlight-item">
-            <div class="highlight-label">Deployment</div>
-            <div class="highlight-value">Live in Azure</div>
-          </div>
-          <div class="highlight-item">
-            <div class="highlight-label">AI Model</div>
-            <div class="highlight-value">GPT-4o</div>
-          </div>
-          <div class="highlight-item">
-            <div class="highlight-label">IaC</div>
-            <div class="highlight-value">Terraform</div>
-          </div>
-        </div>
-        <span class="card-link">View on GitHub →</span>
-      </a>
-
-      <!-- Project 2 — IN PROGRESS -->
-      <div class="project-card">
-        <div class="card-header">
-          <div class="project-number">02</div>
-          <span class="status-badge active">In Progress</span>
-        </div>
-        <div class="project-title">AI Chatbot on Azure</div>
-        <div class="project-desc">
-          Conversational AI chatbot with persistent memory, deployed on Azure. Will cover Azure Bot Service, Cognitive Services, and scalable backend architecture.
-        </div>
-        <div class="tech-stack">
-          <span class="tech-tag">Azure Bot Service</span>
-          <span class="tech-tag">Azure OpenAI</span>
-          <span class="tech-tag">Azure App Service</span>
-          <span class="tech-tag">Cosmos DB</span>
-        </div>
+<!-- ═══ HERO ═══ -->
+<div class="hero" id="home">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-wrap">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="eyebrow-dot"></div>
+        <span class="eyebrow-text">Available for Cloud Roles</span>
       </div>
-
-      <!-- Project 3 — PLANNED -->
-      <div class="project-card planned">
-        <div class="card-header">
-          <div class="project-number">03</div>
-          <span class="status-badge planned">Planned</span>
-        </div>
-        <div class="project-title">Kubernetes AI Inference Service</div>
-        <div class="project-desc">
-          AI model inference service running on AKS. Covers container orchestration, horizontal pod autoscaling, and production-grade Kubernetes patterns.
-        </div>
-        <div class="tech-stack">
-          <span class="tech-tag">AKS</span>
-          <span class="tech-tag">Docker</span>
-          <span class="tech-tag">Kubernetes</span>
-          <span class="tech-tag">Azure Container Registry</span>
-        </div>
+      <h1 class="hero-name">
+        <span class="hero-name-1">Woedem</span>
+        <span class="hero-name-2">Malorku</span>
+      </h1>
+      <div class="hero-role">
+        <span id="type-el"></span><span class="type-cur"></span>
       </div>
-
-      <!-- Project 4 — PLANNED -->
-      <div class="project-card planned">
-        <div class="card-header">
-          <div class="project-number">04</div>
-          <span class="status-badge planned">Planned</span>
-        </div>
-        <div class="project-title">Multi-Region Architecture</div>
-        <div class="project-desc">
-          Globally distributed, fault-tolerant architecture with traffic management, failover, and disaster recovery. Demonstrates enterprise-scale design patterns.
-        </div>
-        <div class="tech-stack">
-          <span class="tech-tag">Azure Traffic Manager</span>
-          <span class="tech-tag">Cosmos DB multi-region</span>
-          <span class="tech-tag">Azure Front Door</span>
-          <span class="tech-tag">Terraform</span>
-        </div>
+      <p class="hero-desc">
+        Building real, deployed cloud infrastructure — not tutorials.
+        Architecting AI-powered, serverless, and distributed systems on Azure.
+      </p>
+      <div class="hero-certs">
+        <span class="cert-chip">
+          <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 0l1.5 4.5H12l-3.5 3 1 4.5L6 9l-3.5 3 1-4.5L0 4.5h4.5z"/></svg>
+          AZ-104
+        </span>
+        <span class="cert-chip">
+          <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 0l1.5 4.5H12l-3.5 3 1 4.5L6 9l-3.5 3 1-4.5L0 4.5h4.5z"/></svg>
+          AWS SOA-C03
+        </span>
+        <span class="cert-chip">
+          <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 0l1.5 4.5H12l-3.5 3 1 4.5L6 9l-3.5 3 1-4.5L0 4.5h4.5z"/></svg>
+          AZ AI-900
+        </span>
       </div>
-
+      <div class="hero-btns">
+        <a href="#work" class="btn btn-primary">View My Work ↓</a>
+        <a href="https://github.com/woedem24" target="_blank" class="btn btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.79-.26.79-.58v-2.23c-3.34.73-4.03-1.42-4.03-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013.01-.4c1.02 0 2.05.14 3.01.4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.19.69.8.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/ebenezer-woedem-malorku-917591177/" target="_blank" class="btn btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73A1.77 1.77 0 114.73 5a1.77 1.77 0 011.77 1.73zM20 19h-3v-5.6c0-3.37-4-3.11-4 0V19h-3V8h3v1.77C14.4 7.2 20 7 20 11.48V19z"/></svg>
+          LinkedIn
+        </a>
+        <button class="btn btn-dim" disabled>Resume PDF</button>
+      </div>
     </div>
-  </section>
-
-  <footer>
-    <div class="footer-text">© 2026 Woedem Malorku</div>
-    <div class="footer-links">
-      <a href="https://github.com/woedem24" target="_blank">GitHub</a>
-      <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+    <div class="hero-right">
+      <div class="terminal">
+        <div class="term-bar">
+          <div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>
+          <span class="term-title">cloud-portfolio — zsh</span>
+        </div>
+        <div class="term-body" id="term-body"></div>
+      </div>
     </div>
-  </footer>
-
+  </div>
 </div>
+
+<div class="divider"></div>
+
+<!-- ═══ JOURNEY ═══ -->
+<section class="section" id="journey">
+  <div class="sec-tag rev">Career Transition</div>
+  <h2 class="sec-h rev d1">From SysAdmin<br>to Cloud Architect</h2>
+  <p class="sec-sub rev d2">
+    5+ years running on-premise infrastructure — applying that operational depth
+    to design cloud-native systems built for scale and resilience.
+  </p>
+
+  <div class="journey-grid rev d2">
+    <div class="jcard past">
+      <div class="jperiod">2019 — 2024</div>
+      <div class="jrole">Systems Administrator</div>
+      <ul class="jlist">
+        <li>On-premise infrastructure management</li>
+        <li>Active Directory &amp; identity</li>
+        <li>Network config &amp; security hardening</li>
+        <li>Server provisioning &amp; patching</li>
+        <li>Incident response &amp; monitoring</li>
+        <li>Backup &amp; disaster recovery</li>
+      </ul>
+    </div>
+    <div class="jarrow">
+      <div class="jarrow-line"></div>
+      <div class="jarrow-icon">→</div>
+      <div class="jarrow-line"></div>
+    </div>
+    <div class="jcard future">
+      <div class="jperiod">2024 — Present</div>
+      <div class="jrole">Cloud Solutions Architect</div>
+      <ul class="jlist">
+        <li>Cloud-native architecture design</li>
+        <li>Infrastructure as Code — Terraform</li>
+        <li>Azure &amp; AWS platform engineering</li>
+        <li>AI/ML pipeline integration</li>
+        <li>Kubernetes &amp; container orchestration</li>
+        <li>Multi-region distributed systems</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cert-cards">
+    <div class="cert-card rev d1">
+      <div class="cert-ico">☁️</div>
+      <div class="cert-lbl">AZ-104</div>
+      <div class="cert-full">Azure Administrator Associate</div>
+    </div>
+    <div class="cert-card rev d2">
+      <div class="cert-ico">🔧</div>
+      <div class="cert-lbl">AWS SOA-C03</div>
+      <div class="cert-full">SysOps Administrator Associate</div>
+    </div>
+    <div class="cert-card rev d3">
+      <div class="cert-ico">🤖</div>
+      <div class="cert-lbl">AZ AI-900</div>
+      <div class="cert-full">Azure AI Fundamentals</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ ROADMAP ═══ -->
+<section class="section">
+  <div class="rm-head">
+    <div>
+      <div class="sec-tag rev">Roadmap</div>
+      <h2 class="sec-h rev d1">6-Month Build Plan</h2>
+    </div>
+    <div class="rm-count rev">
+      <div class="rm-num" data-count="1">0</div>
+      <div class="rm-lbl">of 4 complete</div>
+    </div>
+  </div>
+  <div class="rm-track rev d1">
+    <div class="rm-seg done"><div class="rm-fill"></div></div>
+    <div class="rm-seg live"><div class="rm-fill"></div></div>
+    <div class="rm-seg plan"><div class="rm-fill"></div></div>
+    <div class="rm-seg plan"><div class="rm-fill"></div></div>
+    <div class="rm-seg plan"><div class="rm-fill"></div></div>
+    <div class="rm-seg plan"><div class="rm-fill"></div></div>
+  </div>
+  <div class="rm-rows rev d2">
+    <div class="rm-row done">
+      <span class="rm-n">01</span>
+      <span class="rm-dot"></span>
+      <span class="rm-name">Serverless LLM Pipeline</span>
+      <span class="rm-badge">✓ Complete</span>
+    </div>
+    <div class="rm-row live">
+      <span class="rm-n">02</span>
+      <span class="rm-dot"></span>
+      <span class="rm-name">AI Chatbot on Azure</span>
+      <span class="rm-badge">▶ In Progress</span>
+    </div>
+    <div class="rm-row plan">
+      <span class="rm-n">03</span>
+      <span class="rm-dot"></span>
+      <span class="rm-name">Kubernetes AI Inference Service</span>
+      <span class="rm-badge">○ Planned</span>
+    </div>
+    <div class="rm-row plan">
+      <span class="rm-n">04</span>
+      <span class="rm-dot"></span>
+      <span class="rm-name">Multi-Region Architecture</span>
+      <span class="rm-badge">○ Planned</span>
+    </div>
+    <div class="rm-row plan">
+      <span class="rm-n">05–06</span>
+      <span class="rm-dot"></span>
+      <span class="rm-name">Portfolio polish + Job applications</span>
+      <span class="rm-badge">○ Month 5–6</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ PROJECTS ═══ -->
+<section class="section" id="work">
+  <div class="sec-tag rev">Projects</div>
+  <h2 class="sec-h rev d1">Real Infrastructure,<br>Actually Deployed</h2>
+  <p class="sec-sub rev d2">Not tutorials. Not sandbox environments. Production-grade cloud architecture built from scratch.</p>
+
+  <div class="proj-grid">
+
+    <!-- 01 Complete -->
+    <a class="pcard done rev d1" href="https://github.com/woedem24/azure-llm-pipeline" target="_blank">
+      <div class="pcard-glow"></div>
+      <div class="pcard-top">
+        <span class="pcard-n">01</span>
+        <span class="pstatus done"><span class="sdot"></span> Complete</span>
+      </div>
+      <div class="pcard-title">Serverless LLM Pipeline</div>
+      <div class="pcard-desc">
+        Event-driven document analysis. Blob Storage upload triggers Azure Function → GPT-4o processes content → results persisted to Cosmos DB. Fully running in Azure, provisioned with Terraform.
+      </div>
+      <div class="pstack">
+        <span class="ptag">Azure Functions</span>
+        <span class="ptag">GPT-4o</span>
+        <span class="ptag">Cosmos DB</span>
+        <span class="ptag">Key Vault</span>
+        <span class="ptag">Blob Storage</span>
+        <span class="ptag">Terraform</span>
+        <span class="ptag">Python</span>
+      </div>
+      <div class="pcard-hl">
+        <div><div class="hl-l">Pattern</div><div class="hl-v">Event-driven serverless</div></div>
+        <div><div class="hl-l">AI Model</div><div class="hl-v">GPT-4o</div></div>
+        <div><div class="hl-l">Deployment</div><div class="hl-v">Live in Azure</div></div>
+        <div><div class="hl-l">IaC</div><div class="hl-v">Terraform</div></div>
+      </div>
+      <span class="pcta">View on GitHub →</span>
+    </a>
+
+    <!-- 02 In Progress -->
+    <div class="pcard live rev d2">
+      <div class="pcard-glow"></div>
+      <div class="pcard-top">
+        <span class="pcard-n">02</span>
+        <span class="pstatus live"><span class="sdot"></span> In Progress</span>
+      </div>
+      <div class="pcard-title">AI Chatbot on Azure</div>
+      <div class="pcard-desc">
+        Conversational AI chatbot with persistent session memory, deployed on Azure App Service. Covers Bot Service integration, multi-turn dialogue, and scalable multi-user backend architecture.
+      </div>
+      <div class="pstack">
+        <span class="ptag">Azure Bot Service</span>
+        <span class="ptag">Azure OpenAI</span>
+        <span class="ptag">App Service</span>
+        <span class="ptag">Cosmos DB</span>
+      </div>
+      <div class="pcard-hl">
+        <div><div class="hl-l">Pattern</div><div class="hl-v">Conversational AI</div></div>
+        <div><div class="hl-l">State</div><div class="hl-v">Persistent memory</div></div>
+      </div>
+    </div>
+
+    <!-- 03 Planned -->
+    <div class="pcard plan rev d3">
+      <div class="pcard-top">
+        <span class="pcard-n">03</span>
+        <span class="pstatus plan"><span class="sdot"></span> Planned</span>
+      </div>
+      <div class="pcard-title">Kubernetes AI Inference Service</div>
+      <div class="pcard-desc">
+        AI model inference API on AKS — container orchestration, horizontal pod autoscaling, rolling deployments, and production-grade Kubernetes patterns with Azure Container Registry.
+      </div>
+      <div class="pstack">
+        <span class="ptag">AKS</span>
+        <span class="ptag">Docker</span>
+        <span class="ptag">Kubernetes</span>
+        <span class="ptag">Azure Container Registry</span>
+      </div>
+    </div>
+
+    <!-- 04 Planned -->
+    <div class="pcard plan rev d4">
+      <div class="pcard-top">
+        <span class="pcard-n">04</span>
+        <span class="pstatus plan"><span class="sdot"></span> Planned</span>
+      </div>
+      <div class="pcard-title">Multi-Region Architecture</div>
+      <div class="pcard-desc">
+        Globally distributed, fault-tolerant architecture — intelligent traffic routing, automatic failover, geo-replicated data, and CDN-accelerated delivery demonstrating enterprise-scale design.
+      </div>
+      <div class="pstack">
+        <span class="ptag">Azure Traffic Manager</span>
+        <span class="ptag">Cosmos DB multi-region</span>
+        <span class="ptag">Azure Front Door</span>
+        <span class="ptag">Terraform</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ STACK ═══ -->
+<section class="section" id="stack">
+  <div class="sec-tag rev">Technical Skills</div>
+  <h2 class="sec-h rev d1">What I Build With</h2>
+  <div class="skills-grid">
+    <div class="skill-col col-azure rev d1">
+      <div class="skill-col-title">Azure Cloud</div>
+      <div class="skill-items">
+        <div class="skill-item"><span class="skill-name">Azure Functions</span><div class="bar-wrap"><div class="bar" data-w="90"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Cosmos DB</span><div class="bar-wrap"><div class="bar" data-w="85"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Azure OpenAI</span><div class="bar-wrap"><div class="bar" data-w="80"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Key Vault</span><div class="bar-wrap"><div class="bar" data-w="85"></div></div></div>
+        <div class="skill-item"><span class="skill-name">AKS</span><div class="bar-wrap"><div class="bar" data-w="65"></div></div></div>
+        <div class="skill-item"><span class="skill-name">App Service</span><div class="bar-wrap"><div class="bar" data-w="78"></div></div></div>
+      </div>
+    </div>
+    <div class="skill-col col-iac rev d2">
+      <div class="skill-col-title">IaC &amp; DevOps</div>
+      <div class="skill-items">
+        <div class="skill-item"><span class="skill-name">Terraform</span><div class="bar-wrap"><div class="bar" data-w="85"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Docker</span><div class="bar-wrap"><div class="bar" data-w="80"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Kubernetes</span><div class="bar-wrap"><div class="bar" data-w="68"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Python</span><div class="bar-wrap"><div class="bar" data-w="80"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Azure CLI</span><div class="bar-wrap"><div class="bar" data-w="90"></div></div></div>
+        <div class="skill-item"><span class="skill-name">CI/CD Pipelines</span><div class="bar-wrap"><div class="bar" data-w="74"></div></div></div>
+      </div>
+    </div>
+    <div class="skill-col col-ops rev d3">
+      <div class="skill-col-title">Operations</div>
+      <div class="skill-items">
+        <div class="skill-item"><span class="skill-name">Active Directory</span><div class="bar-wrap"><div class="bar" data-w="95"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Networking</span><div class="bar-wrap"><div class="bar" data-w="90"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Security / IAM</span><div class="bar-wrap"><div class="bar" data-w="85"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Monitoring</span><div class="bar-wrap"><div class="bar" data-w="85"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Disaster Recovery</span><div class="bar-wrap"><div class="bar" data-w="80"></div></div></div>
+        <div class="skill-item"><span class="skill-name">AWS (SOA)</span><div class="bar-wrap"><div class="bar" data-w="70"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="contact">
+  <div class="foot-inner">
+    <div class="foot-l">
+      <div class="foot-headline rev">Open to cloud roles.</div>
+      <div class="foot-sub rev d1">Azure Architect · Cloud Engineer · Platform Engineer</div>
+      <div class="foot-btns rev d2">
+        <a href="https://www.linkedin.com/in/ebenezer-woedem-malorku-917591177/" target="_blank" class="btn btn-primary">Connect on LinkedIn</a>
+        <a href="https://github.com/woedem24" target="_blank" class="btn btn-ghost">GitHub</a>
+        <button class="btn btn-dim" disabled>Resume PDF (Coming Soon)</button>
+      </div>
+    </div>
+    <div class="foot-r rev">
+      <div class="foot-copy">© 2026 Woedem Malorku</div>
+      <div class="foot-copy" style="opacity:.45;font-size:10px">Systems Admin → Cloud Solutions Architect</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── CURSOR ──
+const cur = document.getElementById('cur');
+const ring = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+(function loop(){ rx+=(mx-rx)*.14; ry+=(my-ry)*.14; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+document.querySelectorAll('a,button,.pcard,.cert-chip,.cert-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('hov'));
+});
+
+// ── SCROLL PROGRESS ──
+const sprog=document.getElementById('sprog');
+window.addEventListener('scroll',()=>{ sprog.style.width=(window.scrollY/(document.body.scrollHeight-innerHeight)*100)+'%'; },{passive:true});
+
+// ── NAV ──
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>60),{passive:true});
+
+// ── CANVAS ──
+(function(){
+  const c=document.getElementById('hero-canvas');
+  const ctx=c.getContext('2d');
+  let W,H,pts=[],mcx=-9999,mcy=-9999;
+  function resize(){ W=c.width=c.offsetWidth; H=c.height=c.offsetHeight; }
+  window.addEventListener('resize',()=>{ resize(); init(); });
+  resize();
+  c.addEventListener('mousemove',e=>{ const r=c.getBoundingClientRect(); mcx=e.clientX-r.left; mcy=e.clientY-r.top; });
+  c.addEventListener('mouseleave',()=>{ mcx=-9999; mcy=-9999; });
+  function init(){
+    pts=[];
+    const n=Math.min(Math.floor(W*H/12000),80);
+    for(let i=0;i<n;i++) pts.push({ x:Math.random()*W, y:Math.random()*H, vx:(Math.random()-.5)*.38, vy:(Math.random()-.5)*.38, r:Math.random()*1.5+.8, a:Math.random()*.4+.25 });
+  }
+  init();
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<140){ ctx.strokeStyle=`rgba(0,212,255,${(1-d/140)*.22})`; ctx.lineWidth=.6; ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y); ctx.stroke(); }
+      }
+    }
+    pts.forEach(p=>{
+      const dx=p.x-mcx, dy=p.y-mcy, d=Math.sqrt(dx*dx+dy*dy);
+      if(d<90){ const f=(90-d)/90*.28; p.vx+=(dx/d)*f; p.vy+=(dy/d)*f; const sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy); if(sp>2.2){p.vx=p.vx/sp*2.2;p.vy=p.vy/sp*2.2;} }
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=`rgba(0,212,255,${p.a})`; ctx.fill();
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── TYPING EFFECT ──
+(function(){
+  const el=document.getElementById('type-el');
+  const words=['Systems Administrator','Cloud Solutions Architect','Azure Cloud Engineer','Infrastructure as Code','Building at Scale'];
+  let wi=0,ci=0,del=false;
+  function tick(){
+    const w=words[wi];
+    el.textContent=del?w.slice(0,ci-1):w.slice(0,ci+1);
+    del?ci--:ci++;
+    let ms=del?38:80;
+    if(!del&&ci===w.length){ms=2200;del=true;}
+    else if(del&&ci===0){del=false;wi=(wi+1)%words.length;ms=420;}
+    setTimeout(tick,ms);
+  }
+  setTimeout(tick,900);
+})();
+
+// ── TERMINAL ──
+(function(){
+  const body=document.getElementById('term-body');
+  const lines=[
+    {html:`<span class="tc"># azure-cloud-portfolio ~ woedem</span>`},
+    {html:`<span class="tp">$ </span><span>az account set --subscription "cloud-portfolio"</span>`},
+    {html:`<span class="ts">  ✓ Subscription active</span>`},
+    {html:``},
+    {html:`<span class="tc"># 01 — Serverless LLM Pipeline  [LIVE ✓]</span>`},
+    {html:`<span class="tp">$ </span><span>terraform -chdir=llm-pipeline apply</span>`},
+    {html:`<span class="tr">  + azurerm_function_app.llm_processor</span>`},
+    {html:`<span class="tr">  + azurerm_cosmosdb_account.main</span>`},
+    {html:`<span class="tr">  + azurerm_cognitive_account.gpt4o</span>`},
+    {html:`<span class="tr">  + azurerm_key_vault.secrets</span>`},
+    {html:`<span class="ts">  Apply complete! 12 added, 0 destroyed</span>`},
+    {html:``},
+    {html:`<span class="tc"># 02 — AI Chatbot  [IN PROGRESS ▶]</span>`},
+    {html:`<span class="tp">$ </span><span>az bot create --name wm-chatbot</span>`},
+    {html:`<span class="ti">  → Wiring Azure OpenAI endpoint...</span>`},
+    {html:`<span class="ti">  → Connecting Cosmos DB memory store...</span>`},
+    {html:``},
+    {html:`<span class="tc"># 03 — K8s Inference  [COMING SOON]</span>`},
+    {html:`<span class="tp">$ </span><span>kubectl apply -f inference.yaml</span>`},
+    {html:`<span class="tw">  → Pending: AKS cluster provisioning</span>`},
+  ];
+  let i=0;
+  function next(){
+    if(i>=lines.length) return;
+    const l=lines[i];
+    const span=document.createElement('span');
+    span.className='tl';
+    span.innerHTML=l.html;
+    body.appendChild(span);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>span.classList.add('show')));
+    i++;
+    const isEmpty=l.html==='';
+    const isCmd=l.html.includes('class="tp"');
+    const delay=isEmpty?80:isCmd?260:140;
+    setTimeout(next,delay+(!isEmpty?Math.min(l.html.replace(/<[^>]+>/g,'').length*7,280):0));
+  }
+  setTimeout(next,1600);
+})();
+
+// ── SCROLL REVEAL ──
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:.1,rootMargin:'0px 0px -44px 0px'});
+document.querySelectorAll('.rev').forEach(el=>revObs.observe(el));
+
+// ── ROADMAP BARS ──
+const rmObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.querySelectorAll('.rm-fill').forEach((f,i)=>setTimeout(()=>f.style.transform='scaleX(1)',i*70)); } });
+},{threshold:.3});
+const rmTrack=document.querySelector('.rm-track');
+if(rmTrack) rmObs.observe(rmTrack);
+
+// ── SKILL BARS ──
+const sbObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.querySelectorAll('.bar').forEach((b,i)=>setTimeout(()=>b.style.transform=`scaleX(${b.dataset.w/100})`,i*75)); });
+},{threshold:.2});
+document.querySelectorAll('.skill-col').forEach(el=>sbObs.observe(el));
+
+// ── COUNTER ──
+const cntObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el=e.target,target=+el.dataset.count;
+      let v=0; const step=target/60;
+      const t=setInterval(()=>{ v=Math.min(v+step,target); el.textContent=Math.round(v); if(v>=target)clearInterval(t); },20);
+      cntObs.unobserve(el);
+    }
+  });
+},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cntObs.observe(el));
+
+// ── CARD TILT ──
+document.querySelectorAll('.pcard:not(.plan)').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=e.clientX-r.left, y=e.clientY-r.top;
+    const rx2=((y-r.height/2)/r.height)*-7;
+    const ry2=((x-r.width/2)/r.width)*7;
+    card.style.transform=`perspective(900px) rotateX(${rx2}deg) rotateY(${ry2}deg) scale(1.018)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transition='transform .55s cubic-bezier(.4,0,.2,1),box-shadow .3s,border-color .3s';
+    card.style.transform='';
+    setTimeout(()=>card.style.transition='',560);
+  });
+});
+</script>
 </body>
 </html>
