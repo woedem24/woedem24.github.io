@@ -609,6 +609,36 @@ nav.stuck{
   box-shadow:0 0 60px rgba(0,212,255,.45);
   transform:translateY(-2px);
 }
+.ct-form{
+  width:100%;max-width:520px;
+  display:flex;flex-direction:column;gap:14px;
+}
+.cf-row{display:flex;gap:14px;}
+.cf-input{
+  width:100%;background:var(--surface);
+  border:1px solid var(--border);border-radius:14px;
+  padding:16px 20px;color:var(--text);
+  font-family:var(--mono);font-size:13px;
+  transition:border-color .3s,box-shadow .3s;
+  outline:none;box-sizing:border-box;
+}
+.cf-input:focus{
+  border-color:rgba(0,212,255,.4);
+  box-shadow:0 0 0 3px rgba(0,212,255,.08);
+}
+.cf-input::placeholder{color:var(--dim);}
+.cf-textarea{resize:vertical;min-height:130px;}
+.ct-form .ct-btn{
+  width:100%;justify-content:center;
+  border:none;cursor:pointer;
+}
+.ct-form .ct-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.cf-msg{
+  font-family:var(--mono);font-size:12px;
+  text-align:center;min-height:18px;letter-spacing:.05em;
+}
+.cf-msg.ok{color:var(--cyan);}
+.cf-msg.err{color:#ff6b6b;}
 
 /* FOOTER */
 footer{
@@ -962,7 +992,17 @@ footer{
       GitHub
     </a>
   </div>
-  <a class="ct-btn rev d3" href="mailto:ebenezermalorku@gmail.com">Send a Message →</a>
+  <form class="ct-form rev d3" id="contactForm">
+    <input type="hidden" name="access_key" value="04df0a1a-d573-4b19-aa17-429f3dff9a4e">
+    <input type="hidden" name="subject" value="New message from portfolio site">
+    <div class="cf-row">
+      <input class="cf-input" type="text" name="name" placeholder="Your Name" required>
+      <input class="cf-input" type="email" name="email" placeholder="Your Email" required>
+    </div>
+    <textarea class="cf-textarea cf-input" name="message" placeholder="Your Message" required></textarea>
+    <button class="ct-btn" type="submit" id="cfSubmit">Send Message →</button>
+    <div class="cf-msg" id="cfMsg"></div>
+  </form>
 </section>
 
 <footer>
@@ -1088,6 +1128,39 @@ const cntObs=new IntersectionObserver(entries=>{
   });
 },{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(el=>cntObs.observe(el));
+
+// ── CONTACT FORM ──
+(function(){
+  const form=document.getElementById('contactForm');
+  const btn=document.getElementById('cfSubmit');
+  const msg=document.getElementById('cfMsg');
+  if(!form)return;
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    btn.textContent='Sending...';
+    btn.disabled=true;
+    msg.className='cf-msg';msg.textContent='';
+    const data=Object.fromEntries(new FormData(form));
+    try{
+      const res=await fetch('https://api.web3forms.com/submit',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify(data)
+      });
+      const json=await res.json();
+      if(json.success){
+        msg.textContent='Message sent! I\'ll get back to you soon.';
+        msg.className='cf-msg ok';
+        form.reset();
+      }else{throw new Error(json.message);}
+    }catch(err){
+      msg.textContent='Something went wrong. Try emailing me directly.';
+      msg.className='cf-msg err';
+    }
+    btn.textContent='Send Message →';
+    btn.disabled=false;
+  });
+})();
 
 // ── CARD TILT ──
 document.querySelectorAll('.pfeat,.pc:not(.plan)').forEach(card=>{
