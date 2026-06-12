@@ -1,0 +1,5 @@
+# Private — never publish (personal finance tracker + data)
+_private/
+data.json
+dashboard.html
+admin.html
