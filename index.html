@@ -4,6 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Woedem Malorku — Cloud Solutions Architect</title>
+<meta name="description" content="Cloud Solutions Architect building AI-powered infrastructure on Azure. Serverless LLM pipelines, deployed chatbots, Terraform IaC. AZ-104, AWS CloudOps Engineer Associate, AI-900.">
+<link rel="canonical" href="https://woedem24.github.io/">
+
+<!-- Open Graph / LinkedIn / Slack link previews -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://woedem24.github.io/">
+<meta property="og:title" content="Woedem Malorku — Cloud Solutions Architect">
+<meta property="og:description" content="Building AI-powered cloud infrastructure on Azure. Real projects, actually deployed.">
+<meta property="og:image" content="https://woedem24.github.io/woedem-portrait.jpg">
+<meta property="og:image:alt" content="Woedem Malorku">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Woedem Malorku — Cloud Solutions Architect">
+<meta name="twitter:description" content="Building AI-powered cloud infrastructure on Azure. Real projects, actually deployed.">
+<meta name="twitter:image" content="https://woedem24.github.io/woedem-portrait.jpg">
+<meta name="theme-color" content="#060912">
+
+<!-- Inline SVG favicon: no extra request, no 404 in the console -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23060912'/><text x='50' y='68' font-family='system-ui,sans-serif' font-size='52' font-weight='700' fill='%2300d4ff' text-anchor='middle'>W</text></svg>">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -27,6 +46,56 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
+
+/* ── Keyboard focus ───────────────────────────────────────
+   There was exactly one :focus rule on this page (form inputs), so
+   tabbing through the nav, buttons, project cards and slider arrows
+   moved an invisible cursor — a WCAG 2.4.7 failure. :focus-visible
+   shows the ring for keyboard users without adding it on mouse click. */
+:focus-visible{
+  outline:2px solid var(--cyan);
+  outline-offset:3px;
+  border-radius:4px;
+}
+a:focus-visible,button:focus-visible{
+  outline:2px solid var(--cyan);
+  outline-offset:4px;
+}
+
+/* Skip link — lets keyboard and screen-reader users jump the nav */
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:10000;
+  background:var(--cyan);color:var(--bg);
+  padding:12px 20px;border-radius:0 0 8px 0;
+  font-family:var(--mono);font-size:13px;font-weight:600;
+}
+.skip:focus{left:0;}
+
+/* Honeypot — hidden from humans and assistive tech, visible to naive bots */
+.hp{position:absolute!important;left:-9999px!important;opacity:0!important;height:0;width:0;}
+
+/* ── Reduced motion ───────────────────────────────────────
+   Honours the OS "reduce motion" setting. The page previously animated
+   particles, a typing cursor, a marquee, card tilt and counters
+   unconditionally, which is a vestibular-trigger risk (WCAG 2.3.3).
+   The canvas and typing loops also check this flag in JS. */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+  html{scroll-behavior:auto;}
+  .grain{animation:none;}
+  #canvas{display:none;}
+  .mq-track{animation:none!important;}
+  .tcur{animation:none;opacity:1;}
+  /* Reveal-on-scroll content must not stay invisible when transitions are off */
+  .rev{opacity:1!important;transform:none!important;}
+  .hli{transform:none!important;}
+  .rm-fill{transform:scaleX(1)!important;}
+}
 body{
   background:var(--bg);color:var(--text);
   font-family:var(--sans);overflow-x:hidden;
@@ -215,8 +284,8 @@ nav.stuck{
   box-shadow:0 0 40px rgba(0,212,255,.07);
 }
 
-/* Actual photo — place your image file next to index.html
-   then change src="" to src="your-photo.jpg"             */
+/* Portrait. Source is woedem-portrait.jpg — 1400x933, EXIF stripped.
+   The original camera export was 8192x5464 / 8.2 MB and is gitignored. */
 .photo-img{
   width:100%;height:100%;
   object-fit:cover;object-position:center top;
@@ -224,8 +293,7 @@ nav.stuck{
   display:none;z-index:1;
 }
 .photo-img[src]:not([src=""]){display:block;}
-.photo-img[src]:not([src=""])~.photo-mono,
-.photo-img[src]:not([src=""])~.photo-hint{display:none;}
+.photo-img[src]:not([src=""])~.photo-mono{display:none;}
 
 .pc-brk{
   position:absolute;width:20px;height:20px;
@@ -247,12 +315,6 @@ nav.stuck{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;
 }
-.photo-hint{
-  font-family:var(--mono);font-size:10px;
-  color:var(--dim);letter-spacing:.18em;text-transform:uppercase;
-  position:relative;z-index:1;
-}
-
 /* Floating stat badges */
 .sf{
   position:absolute;
@@ -697,8 +759,9 @@ footer{
 </head>
 <body>
 
-<div class="grain"></div>
-<div id="prog"></div>
+<a href="#work" class="skip">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+<div id="prog" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -735,11 +798,11 @@ footer{
       </div>
       <div class="h-btns">
         <a href="#work" class="btn-cyan">View Work ↓</a>
-        <a href="https://github.com/woedem24" target="_blank" class="btn-ghost">
+        <a href="https://github.com/woedem24" target="_blank" rel="noopener noreferrer" class="btn-ghost">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.79-.26.79-.58v-2.23c-3.34.73-4.03-1.42-4.03-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013.01-.4c1.02 0 2.05.14 3.01.4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.19.69.8.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
           GitHub
         </a>
-        <a href="https://www.linkedin.com/in/ebenezer-woedem-malorku-917591177/" target="_blank" class="btn-ghost">
+        <a href="https://www.linkedin.com/in/ebenezer-woedem-malorku-917591177/" target="_blank" rel="noopener noreferrer" class="btn-ghost">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73A1.77 1.77 0 114.73 5a1.77 1.77 0 011.77 1.73zM20 19h-3v-5.6c0-3.37-4-3.11-4 0V19h-3V8h3v1.77C14.4 7.2 20 7 20 11.48V19z"/></svg>
           LinkedIn
         </a>
@@ -755,11 +818,10 @@ footer{
         <div class="pc-brk tr"></div>
         <div class="pc-brk bl"></div>
         <div class="pc-brk br"></div>
-        <!-- To add your photo: put your image file in the same folder as index.html,
-             then change src="" below to src="yourphoto.jpg" -->
-        <img class="photo-img" src="IMG_1033.jpeg" alt="Woedem Malorku" onerror="this.style.display='none'">
-        <div class="photo-mono">W<em>M</em></div>
-        <div class="photo-hint">Photo — Coming Soon</div>
+        <img class="photo-img" src="woedem-portrait.jpg"
+             width="1400" height="933" fetchpriority="high" decoding="async"
+             alt="Woedem Malorku" onerror="this.style.display='none'">
+        <div class="photo-mono" aria-hidden="true">W<em>M</em></div>
       </div>
     </div>
   </div>
@@ -786,7 +848,7 @@ footer{
     <button class="ps-btn ps-next" aria-label="Scroll projects right">→</button>
   </div>
   <div class="pslider rev" id="pslider">
-  <a class="pfeat" href="https://github.com/woedem24/azure-llm-pipeline" target="_blank">
+  <a class="pfeat" href="https://github.com/woedem24/azure-llm-pipeline" target="_blank" rel="noopener noreferrer">
     <div>
       <div class="pf-top">
         <span class="pf-n">01 / 04</span>
@@ -813,11 +875,11 @@ footer{
     </div>
   </a>
 
-  <a class="pfeat" href="https://github.com/woedem24/azure-ai-chatbot" target="_blank">
+  <a class="pfeat" href="https://woedem24.github.io/azure-ai-chatbot/" target="_blank" rel="noopener noreferrer">
     <div>
       <div class="pf-top">
         <span class="pf-n">02 / 04</span>
-        <span class="badge-live"><span class="live-dot"></span>Live</span>
+        <span class="badge-live"><span class="live-dot"></span>Live · try it</span>
       </div>
       <div class="pf-title">AI Chatbot on Azure</div>
       <p class="pf-desc">Multi-mode conversational AI on Azure Functions (Flex Consumption). Intent routing switches between support, technical, and general modes; GPT-4o replies with per-user conversation memory in Cosmos DB. Secrets in Key Vault via managed identity, token &amp; cost logging to Application Insights, and GitHub Actions auto-tests and deploys on every push.</p>
@@ -830,7 +892,7 @@ footer{
         <span class="stg">GitHub Actions</span>
         <span class="stg">Python</span>
       </div>
-      <span class="pf-cta">View on GitHub →</span>
+      <span class="pf-cta">Open the live demo →</span>
     </div>
     <div class="pf-r">
       <div class="pf-mc"><div class="pf-ml">Pattern</div><div class="pf-mv">Serverless chatbot</div></div>
@@ -884,16 +946,15 @@ footer{
       </h2>
     </div>
     <div class="rm-counter rev">
-      <div class="rm-counter-n"><span data-count="2">0</span><span style="color:var(--dim);font-size:.5em"> / 4</span></div>
+      <div class="rm-counter-n"><span data-count="2">2</span><span style="color:var(--dim);font-size:.5em"> / 4</span></div>
       <div class="rm-counter-l">Projects complete</div>
     </div>
   </div>
 
-  <div class="rm-track rev d1" id="rm-track">
+  <!-- One segment per project, so the bar matches the "2 / 4" counter above. -->
+  <div class="rm-track rev d1" id="rm-track" aria-hidden="true">
     <div class="rm-seg done"><div class="rm-fill"></div></div>
     <div class="rm-seg done"><div class="rm-fill"></div></div>
-    <div class="rm-seg plan"><div class="rm-fill"></div></div>
-    <div class="rm-seg plan"><div class="rm-fill"></div></div>
     <div class="rm-seg plan"><div class="rm-fill"></div></div>
     <div class="rm-seg plan"><div class="rm-fill"></div></div>
   </div>
@@ -961,7 +1022,7 @@ footer{
     </div>
     <div class="rev d1">
       <p class="about-txt">5+ years managing enterprise on-premise infrastructure — Active Directory, networking, server hardening, and incident response. That operational depth now informs how I design cloud systems: resilient, cost-aware, and built to handle failure before it happens.</p>
-      <p class="about-txt">Transitioning full-time into cloud architecture, certified in AZ-104, AWS Cloud Practitioner, and Azure AI Fundamentals, with a portfolio of real deployed Azure projects.</p>
+      <p class="about-txt">Transitioning full-time into cloud architecture, certified in Azure Administrator Associate (AZ-104), AWS CloudOps Engineer Associate (SOA-C03), and Azure AI Fundamentals (AI-900), with a portfolio of real deployed Azure projects. CompTIA Security+ scheduled for 22 August 2026.</p>
       <ul class="about-pts">
         <li>Hands-on with Terraform, AKS, Azure Functions, Cosmos DB, and Azure OpenAI</li>
         <li>Security-first mindset built from years of production incident response</li>
@@ -982,11 +1043,11 @@ footer{
 <div class="stats-band">
   <div class="stats-inner">
     <div class="stat-col rev">
-      <div class="stat-big"><span data-count="2">0</span></div>
-      <div class="stat-lbl">Project Live</div>
+      <div class="stat-big"><span data-count="2">2</span></div>
+      <div class="stat-lbl">Projects Live</div>
     </div>
     <div class="stat-col rev d1">
-      <div class="stat-big"><span data-count="3">0</span></div>
+      <div class="stat-big"><span data-count="3">3</span></div>
       <div class="stat-lbl">Certifications</div>
     </div>
     <div class="stat-col rev d2">
@@ -994,7 +1055,7 @@ footer{
       <div class="stat-lbl">Years Experience</div>
     </div>
     <div class="stat-col rev d3">
-      <div class="stat-big"><span data-count="4">0</span></div>
+      <div class="stat-big"><span data-count="2">2</span></div>
       <div class="stat-lbl">Projects Planned</div>
     </div>
   </div>
@@ -1015,11 +1076,11 @@ footer{
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
       ebenezermalorku@gmail.com
     </a>
-    <a class="ch" href="https://www.linkedin.com/in/ebenezer-woedem-malorku-917591177/" target="_blank">
+    <a class="ch" href="https://www.linkedin.com/in/ebenezer-woedem-malorku-917591177/" target="_blank" rel="noopener noreferrer">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73A1.77 1.77 0 114.73 5a1.77 1.77 0 011.77 1.73zM20 19h-3v-5.6c0-3.37-4-3.11-4 0V19h-3V8h3v1.77C14.4 7.2 20 7 20 11.48V19z"/></svg>
       LinkedIn
     </a>
-    <a class="ch" href="https://github.com/woedem24" target="_blank">
+    <a class="ch" href="https://github.com/woedem24" target="_blank" rel="noopener noreferrer">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.79-.26.79-.58v-2.23c-3.34.73-4.03-1.42-4.03-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013.01-.4c1.02 0 2.05.14 3.01.4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.19.69.8.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
       GitHub
     </a>
@@ -1027,11 +1088,16 @@ footer{
   <form class="ct-form rev d3" id="contactForm">
     <input type="hidden" name="access_key" value="04df0a1a-d573-4b19-aa17-429f3dff9a4e">
     <input type="hidden" name="subject" value="New message from portfolio site">
+    <!-- Web3Forms honeypot: real users never see this, bots fill it in and
+         the submission is silently dropped. The access_key above is public
+         by design, so also restrict allowed domains in the Web3Forms
+         dashboard — otherwise anyone can post to it directly. -->
+    <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div class="cf-row">
-      <input class="cf-input" type="text" name="name" placeholder="Your Name" required>
-      <input class="cf-input" type="email" name="email" placeholder="Your Email" required>
+      <input class="cf-input" type="text" name="name" placeholder="Your Name" maxlength="100" required>
+      <input class="cf-input" type="email" name="email" placeholder="Your Email" maxlength="150" required>
     </div>
-    <textarea class="cf-textarea cf-input" name="message" placeholder="Your Message" required></textarea>
+    <textarea class="cf-textarea cf-input" name="message" placeholder="Your Message" maxlength="3000" required></textarea>
     <button class="ct-btn" type="submit" id="cfSubmit">Send Message →</button>
     <div class="cf-msg" id="cfMsg"></div>
   </form>
@@ -1040,8 +1106,8 @@ footer{
 <footer>
   <div class="foot-id">© 2026 Woedem Malorku — Systems Admin → Cloud Architect</div>
   <div class="foot-links">
-    <a href="https://github.com/woedem24" target="_blank">GitHub</a>
-    <a href="https://www.linkedin.com/in/ebenezer-woedem-malorku-917591177/" target="_blank">LinkedIn</a>
+    <a href="https://github.com/woedem24" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://www.linkedin.com/in/ebenezer-woedem-malorku-917591177/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
     <a href="mailto:ebenezermalorku@gmail.com">Email</a>
   </div>
 </footer>
@@ -1059,10 +1125,19 @@ window.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>60),{p
 setTimeout(()=>document.getElementById('hl1').classList.add('show'),100);
 setTimeout(()=>document.getElementById('hl2').classList.add('show'),260);
 
+// Respect the OS "reduce motion" setting in JS as well as CSS.
+const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // ── CANVAS PARTICLES ──
 (function(){
+  if(REDUCE_MOTION) return;
   const c=document.getElementById('canvas'),ctx=c.getContext('2d');
   let W,H,pts=[],mcx=-9999,mcy=-9999;
+  // The draw loop is O(n^2) over up to 80 points — ~3,160 distance
+  // calculations per frame. It used to run forever via rAF, including
+  // while the hero was scrolled out of view, which drained battery and
+  // hurt Lighthouse for no visible benefit. Now it runs only on screen.
+  let visible=true,running=false;
   function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight;}
   window.addEventListener('resize',()=>{resize();init();});
   resize();
@@ -1087,15 +1162,26 @@ setTimeout(()=>document.getElementById('hl2').classList.add('show'),260);
       p.x+=p.vx;p.y+=p.vy;
       if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
     });
-    requestAnimationFrame(draw);
+    if(visible&&!document.hidden){requestAnimationFrame(draw);}else{running=false;}
   }
-  draw();
+  function start(){if(!running){running=true;requestAnimationFrame(draw);}}
+
+  new IntersectionObserver(es=>{
+    visible=es[0].isIntersecting;
+    if(visible)start();
+  },{threshold:0}).observe(c);
+
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&visible)start();});
+  start();
 })();
 
 // ── TYPING EFFECT ──
 (function(){
   const el=document.getElementById('type-el');
   const words=['Systems Administrator','Cloud Solutions Architect','Azure Platform Engineer','Infrastructure as Code','Building at Scale'];
+  // Constantly-changing text is announced repeatedly by screen readers.
+  el.setAttribute('aria-hidden','true');
+  if(REDUCE_MOTION){el.textContent=words[1];return;}
   let wi=0,ci=0,del=false;
   function tick(){
     const w=words[wi];
@@ -1111,7 +1197,11 @@ setTimeout(()=>document.getElementById('hl2').classList.add('show'),260);
 
 // ── MARQUEE BUILD ──
 (function(){
-  const items=['Azure Functions','GPT-4o','Cosmos DB','Terraform','Kubernetes','Docker','AKS','Key Vault','Azure OpenAI','Python','Blob Storage','Azure Front Door','Traffic Manager','App Service','Azure Bot Service'];
+  // Only technologies actually used in shipped projects. Kubernetes, AKS,
+  // Front Door, Traffic Manager and Bot Service belong to projects 03/04,
+  // which haven't been built — listing them here invites an interview
+  // question there's no work to back up.
+  const items=['Azure Functions','Azure OpenAI','GPT-4o','Cosmos DB','Key Vault','Terraform','GitHub Actions','Blob Storage','Application Insights','Python'];
   const track=document.getElementById('mq');
   let html='';
   for(let pass=0;pass<2;pass++)items.forEach(it=>{

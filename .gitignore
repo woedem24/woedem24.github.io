@@ -3,3 +3,8 @@ _private/
 data.json
 dashboard.html
 admin.html
+
+# Original camera exports — ship the resized woedem-portrait.jpg instead
+IMG_*.jpeg
+IMG_*.JPG
+.DS_Store
